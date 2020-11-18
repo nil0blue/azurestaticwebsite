@@ -1,0 +1,101 @@
+﻿/**
+* #.# Banner
+*
+* @summary: This file contains the css for the project's banners
+*
+* @resources:
+*    ~ResourcePackages\TenetHealth\GridSystem\Templates\banner.html
+*
+* @media-queries: Yes
+*
+*/
+
+.video-banner-wrapper, .video-banner, .inner-banner-video, .inner-video-content
+{
+    height: 350px;
+    position: relative;
+    max-height: 250px;
+    overflow: hidden;
+}
+
+
+/*#region Inner Banner Styles*/
+.inner-banner
+{
+    background-position: center;
+    background-size: cover;
+    height: 350px;
+    position: relative;
+}
+
+.inner-banner .inner-banner-image
+{
+    display: none;
+}
+
+.inner-banner .container, .video-banner .container
+{
+    height: 350px;
+    position: relative;
+}
+.video-banner .videoEmbed {
+    position:relative;
+    width:100%;
+}
+.video-banner video
+{
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    margin: auto 0;
+    max-width:none;
+}
+
+.inner-banner-content > div
+{
+    background-color: #ffffff;
+    bottom: -6px;
+    font-family: "Lato-Light",Helvetica,Arial,sans-serif;
+    font-size: 2em;
+    left: 15px;
+    padding: 20px 30px 0;
+    line-height: 32px;
+    position: absolute;
+    z-index: 10;
+}
+
+.inner-banner-content h1
+{
+    margin-top: 0;
+}
+
+.inner-banner-content .right
+{
+    right: 15px;
+}
+
+#mainContent .banner
+{
+    margin: 0 0 40px 0;
+}
+
+#mainContent .banner .area_pattern
+{
+    padding: 50px 0;
+}
+
+@media only screen and (min-width : 768px)
+{
+    .inner-banner-content .left,
+    .inner-banner-content .right
+    {
+        font-size: 46px;
+    }
+
+    .video-banner-wrapper, .video-banner-wrapper, .video-banner, .inner-banner-video, .inner-video-content
+    {
+        max-height: none;
+    }
+}
+
+/*#endregion */

@@ -1,0 +1,677 @@
+﻿:not(.sfPageEditor) .flex-container, .flex-container .RadDockZone
+{
+    display: -ms-flexbox;
+    display: -webkit-flex;
+    display: flex;
+    -webkit-flex-direction: row;
+    -ms-flex-direction: row;
+    flex-direction: row;
+    -webkit-flex-wrap: wrap;
+    -ms-flex-wrap: wrap;
+    flex-wrap: wrap;
+    -webkit-justify-content: center;
+    -ms-flex-pack: center;
+    justify-content: center;
+    -webkit-align-content: flex-start;
+    -ms-flex-line-pack: start;
+    align-content: flex-start;
+    -webkit-align-items: flex-start;
+    -ms-flex-align: start;
+    align-items: flex-start;
+}
+
+.flex-container .RadDockZone
+{
+    width: 100% !important;
+}
+
+.flex-container.justify-flex-start
+{
+    justify-content: flex-start;
+}
+
+.center-content
+{
+    -webkit-justify-content: space-around;
+    -ms-flex-pack: space-around;
+    justify-content: space-around;
+    -webkit-align-content: center;
+    -ms-flex-line-pack: center;
+    align-content: center;
+    -webkit-align-items: center;
+    -ms-flex-align: center;
+    align-items: center;
+}
+
+.flex-container > div
+{
+    margin-top: 10px;
+    margin-bottom: 10px;
+    width: auto;
+}
+
+.ltIE10 .flex-container
+{
+    display: block;
+    overflow: auto;
+}
+
+.ltIE10 .flex-container > div
+{
+    float: left;
+}
+
+.flex-xs-1 > div
+{
+    width: 100%;
+}
+
+.flex-xs-1 .RadDockZone > div
+{
+    width: 100% !important;
+}
+
+.flex-xs-2 > div
+{
+    width: 49%;
+}
+
+.flex-xs-2 .RadDockZone > div
+{
+    width: 49% !important;
+}
+
+.flex-xs-3 > div
+{
+    width: 32%;
+}
+
+.flex-xs-3 .RadDockZone > div
+{
+    width: 32% !important;
+}
+
+.flex-xs-4 > div
+{
+    width: 24%;
+}
+
+.flex-xs-4 .RadDockZone > div
+{
+    width: 24% !important;
+}
+
+.flex-xs-5 > div
+{
+    width: 19%;
+}
+
+.flex-xs-5 .RadDockZone > div
+{
+    width: 19% !important;
+}
+
+.flex-xs-6 > div
+{
+    width: 16%;
+}
+
+.flex-xs-6 .RadDockZone > div
+{
+    width: 16% !important;
+}
+
+.flex-xs-7 > div
+{
+    width: 13%;
+}
+
+.flex-xs-7 .RadDockZone > div
+{
+    width: 13% !important;
+}
+
+.flex-xs-8 > div
+{
+    width: 11.5%;
+}
+
+.flex-xs-8 .RadDockZone > div
+{
+    width: 11.5% !important;
+}
+
+.flex-xs-9 > div
+{
+    width: 10%;
+}
+
+.flex-xs-9 .RadDockZone > div
+{
+    width: 10% !important;
+}
+
+.flex-xs-10 > div
+{
+    width: 9%;
+}
+
+.flex-xs-10 .RadDockZone > div
+{
+    width: 9% !important;
+}
+
+.flex-xs-11 > div
+{
+    width: 8.5%;
+}
+
+.flex-xs-11 .RadDockZone > div
+{
+    width: 8.5% !important;
+}
+
+.flex-xs-12 > div
+{
+    width: 7.5%;
+}
+
+.flex-xs-12 .RadDockZone > div
+{
+    width: 7.5% !important;
+}
+
+@media only screen and (min-width : 480px)
+{
+    .flex-sm-1 > div
+    {
+        width: 100%;
+    }
+
+    .flex-sm-1 .RadDockZone > div
+    {
+        width: 100% !important;
+    }
+
+    .flex-sm-2 > div
+    {
+        width: 49%;
+    }
+
+    .flex-sm-2 .RadDockZone > div
+    {
+        width: 49% !important;
+    }
+
+    .flex-sm-3 > div
+    {
+        width: 33.3%;
+    }
+
+    .flex-sm-3 .RadDockZone > div
+    {
+        width: 33.3% !important;
+    }
+
+    .flex-sm-4 > div
+    {
+        width: 24%;
+    }
+
+    .flex-sm-4 .RadDockZone > div
+    {
+        width: 24% !important;
+    }
+
+    .flex-sm-5 > div
+    {
+        width: 19%;
+    }
+
+    .flex-sm-5 .RadDockZone > div
+    {
+        width: 19% !important;
+    }
+
+    .flex-sm-6 > div
+    {
+        width: 16%;
+    }
+
+    .flex-sm-6 .RadDockZone > div
+    {
+        width: 16% !important;
+    }
+
+    .flex-sm-7 > div
+    {
+        width: 13%;
+    }
+
+    .flex-sm-7 .RadDockZone > div
+    {
+        width: 13% !important;
+    }
+
+    .flex-sm-8 > div
+    {
+        width: 11.5%;
+    }
+
+    .flex-sm-8 .RadDockZone > div
+    {
+        width: 11.5% !important;
+    }
+
+    .flex-sm-9 > div
+    {
+        width: 10%;
+    }
+
+    .flex-sm-9 .RadDockZone > div
+    {
+        width: 10% !important;
+    }
+
+    .flex-sm-10 > div
+    {
+        width: 9%;
+    }
+
+    .flex-sm-10 .RadDockZone > div
+    {
+        width: 9% !important;
+    }
+
+    .flex-sm-11 > div
+    {
+        width: 8.5%;
+    }
+
+    .flex-sm-11 .RadDockZone > div
+    {
+        width: 8.5% !important;
+    }
+
+    .flex-sm-12 > div
+    {
+        width: 7.5%;
+    }
+
+    .flex-sm-12 .RadDockZone > div
+    {
+        width: 7.5% !important;
+    }
+}
+
+/* Medium */
+@media only screen and (min-width : 768px)
+{
+    .flex-md-1 > div
+    {
+        width: 100%;
+    }
+
+    .flex-md-1 .RadDockZone > div
+    {
+        width: 100% !important;
+    }
+
+    .flex-md-2 > div
+    {
+        width: 49%;
+    }
+
+    .flex-md-2 .RadDockZone > div
+    {
+        width: 49% !important;
+    }
+
+    .flex-md-3 > div
+    {
+        width: 33.3%;
+    }
+
+    .flex-md-3 .RadDockZone > div
+    {
+        width: 33.3% !important;
+    }
+
+    .flex-md-4 > div
+    {
+        width: 24%;
+    }
+
+    .flex-md-4 .RadDockZone > div
+    {
+        width: 24% !important;
+    }
+
+    .flex-md-5 > div
+    {
+        width: 19%;
+    }
+
+    .flex-md-5 .RadDockZone > div
+    {
+        width: 19% !important;
+    }
+
+    .flex-md-6 > div
+    {
+        width: 16%;
+    }
+
+    .flex-md-6 .RadDockZone > div
+    {
+        width: 16% !important;
+    }
+
+    .flex-md-7 > div
+    {
+        width: 13%;
+    }
+
+    .flex-md-7 .RadDockZone > div
+    {
+        width: 13% !important;
+    }
+
+    .flex-md-8 > div
+    {
+        width: 11.5%;
+    }
+
+    .flex-md-8 .RadDockZone > div
+    {
+        width: 11.5% !important;
+    }
+
+    .flex-md-9 > div
+    {
+        width: 10%;
+    }
+
+    .flex-md-9 .RadDockZone > div
+    {
+        width: 10% !important;
+    }
+
+    .flex-md-10 > div
+    {
+        width: 9%;
+    }
+
+    .flex-md-10 .RadDockZone > div
+    {
+        width: 9% !important;
+    }
+
+    .flex-md-11 > div
+    {
+        width: 8.5%;
+    }
+
+    .flex-md-11 .RadDockZone > div
+    {
+        width: 8.5% !important;
+    }
+
+    .flex-md-12 > div
+    {
+        width: 7.5%;
+    }
+
+    .flex-md-12 .RadDockZone > div
+    {
+        width: 7.5% !important;
+    }
+}
+
+/* Large */
+@media only screen and (min-width : 992px)
+{
+    .flex-lg-1 > div
+    {
+        width: 100%;
+    }
+
+    .flex-lg-1 .RadDockZone > div
+    {
+        width: 100% !important;
+    }
+
+    .flex-lg-2 > div
+    {
+        width: 49%;
+    }
+
+    .flex-lg-2 .RadDockZone > div
+    {
+        width: 49% !important;
+    }
+
+    .flex-lg-3 > div
+    {
+        width: 33.3%;
+    }
+
+    .flex-lg-3 .RadDockZone > div
+    {
+        width: 33.3% !important;
+    }
+
+    .flex-lg-4 > div
+    {
+        width: 24%;
+    }
+
+    .flex-lg-4 .RadDockZone > div
+    {
+        width: 24% !important;
+    }
+
+    .flex-lg-5 > div
+    {
+        width: 19%;
+    }
+
+    .flex-lg-5 .RadDockZone > div
+    {
+        width: 19% !important;
+    }
+
+    .flex-lg-6 > div
+    {
+        width: 16%;
+    }
+
+    .flex-lg-6 .RadDockZone > div
+    {
+        width: 16% !important;
+    }
+
+    .flex-lg-7 > div
+    {
+        width: 13%;
+    }
+
+    .flex-lg-7 .RadDockZone > div
+    {
+        width: 13% !important;
+    }
+
+    .flex-lg-8 > div
+    {
+        width: 11.5%;
+    }
+
+    .flex-lg-8 .RadDockZone > div
+    {
+        width: 11.5% !important;
+    }
+
+    .flex-lg-9 > div
+    {
+        width: 10%;
+    }
+
+    .flex-lg-9 .RadDockZone > div
+    {
+        width: 10% !important;
+    }
+
+    .flex-lg-10 > div
+    {
+        width: 9%;
+    }
+
+    .flex-lg-10 .RadDockZone > div
+    {
+        width: 9% !important;
+    }
+
+    .flex-lg-11 > div
+    {
+        width: 8.5%;
+    }
+
+    .flex-lg-11 .RadDockZone > div
+    {
+        width: 8.5% !important;
+    }
+
+    .flex-lg-12 > div
+    {
+        width: 7.5%;
+    }
+
+    .flex-lg-12 .RadDockZone > div
+    {
+        width: 7.5% !important;
+    }
+}
+
+/* X-Large */
+@media only screen and (min-width : 1200px)
+{
+    .flex-xl-1 > div
+    {
+        width: 100%;
+    }
+
+    .flex-xl-1 .RadDockZone > div
+    {
+        width: 100% !important;
+    }
+
+    .flex-xl-2 > div
+    {
+        width: 49%;
+    }
+
+    .flex-xl-2 .RadDockZone > div
+    {
+        width: 49% !important;
+    }
+
+    .flex-xl-3 > div
+    {
+        width: 33.3%;
+    }
+
+    .flex-xl-3 .RadDockZone > div
+    {
+        width: 33.3% !important;
+    }
+
+    .flex-xl-4 > div
+    {
+        width: 24%;
+    }
+
+    .flex-xl-4 .RadDockZone > div
+    {
+        width: 24% !important;
+    }
+
+    .flex-xl-5 > div
+    {
+        width: 19%;
+    }
+
+    .flex-xl-5 .RadDockZone > div
+    {
+        width: 19% !important;
+    }
+
+    .flex-xl-6 > div
+    {
+        width: 16%;
+    }
+
+    .flex-xl-6 .RadDockZone > div
+    {
+        width: 16% !important;
+    }
+
+    .flex-xl-7 > div
+    {
+        width: 13%;
+    }
+
+    .flex-xl-7 .RadDockZone > div
+    {
+        width: 13% !important;
+    }
+
+    .flex-xl-8 > div
+    {
+        width: 11.5%;
+    }
+
+    .flex-xl-8 .RadDockZone > div
+    {
+        width: 11.5% !important;
+    }
+
+    .flex-xl-9 > div
+    {
+        width: 10%;
+    }
+
+    .flex-xl-9 .RadDockZone > div
+    {
+        width: 10% !important;
+    }
+
+    .flex-xl-10 > div
+    {
+        width: 9%;
+    }
+
+    .flex-xl-10 .RadDockZone > div
+    {
+        width: 9% !important;
+    }
+
+    .flex-xl-11 > div
+    {
+        width: 8.5%;
+    }
+
+    .flex-xl-11 .RadDockZone > div
+    {
+        width: 8.5% !important;
+    }
+
+    .flex-xl-12 > div
+    {
+        width: 7.5%;
+    }
+
+    .flex-xl-12 .RadDockZone > div
+    {
+        width: 7.5% !important;
+    }
+}

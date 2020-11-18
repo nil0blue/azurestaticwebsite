@@ -1,0 +1,71 @@
+﻿/**
+* #.# Contact Page
+*
+* @summary: This file contains the css for 'Contact Us' page
+*
+* @resources:
+*
+* @media-queries: Yes
+*
+*/
+
+/*#region Contact Us Styling*/
+.contact-container
+{
+    margin-top: 50px;
+}
+
+.contact-container .map-wrapper
+{
+    text-align: center;
+}
+
+.contact-container .map-wrapper iframe
+{
+    margin: 0 auto 25px auto;
+    width: 100% !important;
+}
+
+.contact-container .cardBlock
+{
+    box-sizing: border-box;
+    padding: 15px;
+}
+
+.contact-container .cardBlock .caption
+{
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    display: inline-block;
+    line-height: normal;
+    min-height: 150px;
+    padding: 15px;
+    width: 100%;
+}
+
+.contact-container .cardBlock h3
+{
+    margin-top: 0px;
+}
+
+@media only screen and (min-width : 768px)
+{
+
+    .contact-container .cardBlock
+    {
+        float: left;
+        width: 50%;
+    }
+}
+
+@media only screen and (min-width : 992px)
+{
+
+    .contact-container .cardBlock
+    {
+        float: left;
+        width: 33.33%;
+    }
+}
+/*#endregion*/

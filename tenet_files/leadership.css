@@ -1,0 +1,256 @@
+﻿/**
+* #.# Leadership Page
+*
+* @summary: This file contains the css for Leadership page
+*
+* @resources:
+*
+* @media-queries: Yes
+*
+*/
+/*Leadership*/
+#filterStrip, #filterStrip k-tabstrip-items
+{
+    border: none;
+    box-sizing: border-box;
+    display: flex;
+    flex-flow: column nowrap;
+    justify-content: space-between;
+    min-height: 50px;
+}
+#LeadershipTabs
+{
+    background: none #fff;
+    border: none;
+}
+#LeadershipTabs.k-tabstrip:focus
+{
+    box-shadow:none;
+}
+#filterStrip > div, #LeadershipTabs ul.k-tabstrip-items
+{
+    align-items: center;
+    background-color: #E5E9EC;
+    border: 3px solid #fff;
+    border-width: 3px 0;
+    box-sizing: border-box;
+    color: #333;
+    cursor: pointer;
+    display: flex;
+    flex: 1 100%;
+    font-size: 1em;
+    justify-content: space-around;
+    text-align: center;
+}
+    #LeadershipTabs ul.k-tabstrip-items
+    {
+        background-color: #fff;
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between;
+    }
+    #filterStrip > div.k-state-selected
+{
+    background-color: #286090;
+    color: #FFF;
+}
+
+#filterStrip > div > span, #LeadershipTabs .k-tabstrip-items li
+{
+    align-items: center;
+    box-sizing: border-box;
+    flex: 1;
+    justify-content: center;
+    margin: auto;
+    padding: 10px;
+}
+
+#LeadershipTabs ul.k-tabstrip-items li:last-child
+{
+    margin-right: 0;
+}
+
+#LeadershipTabs ul.k-tabstrip-items li:first-child
+{
+    margin-left: 0;
+}
+
+#LeadershipTabs ul.k-tabstrip-items li
+{
+    background-color: #E5E9EC;
+    border: 3px solid #fff;
+    border-width: 3px 0;
+    box-sizing: border-box;
+    color: #333;
+    cursor: pointer;
+    display: flex;
+    font-size: 1em;
+    justify-content: center;
+    margin: auto 10px;
+    min-height: 72px;
+    padding: 10px;
+    padding: 0.5em;
+    text-align: center;
+    width: 20%;
+}
+#LeadershipTabs ul.k-tabstrip-items li.k-state-active
+{
+    background-color: #286090;
+}
+#LeadershipTabs ul.k-tabstrip-items li.k-state-active span
+{
+    color: #FFF !important;
+}
+#LeadershipTabs .k-content 
+{
+    border:none;
+
+}
+
+#memberListView
+{
+    border: none;
+    border-top: 2px solid #F58E2E;
+    box-sizing: border-box;
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: space-between;
+    margin-top: 25px;
+    padding-top: 25px;
+}
+#LeadershipTabs .k-content
+{
+    border: none;
+    border-top: 2px solid #F58E2E;
+    box-sizing: border-box;
+    margin-top: 18px;
+    padding-top: 25px;
+}
+#LeadershipTabs .k-content .memberListView
+{
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: space-between;
+}
+
+#memberListView .member, #LeadershipTabs .k-content .member
+{
+    box-sizing: border-box;
+    display: block;
+    margin-bottom: 30px;
+    overflow: auto;
+}
+
+.member img, #inline img
+{
+    float: left;
+    max-width: 19%;
+}
+
+.member .bio
+{
+    color: #4d4f51;
+    display: block;
+    float: right;
+    width: 75%;
+}
+
+.member .bio h3
+{
+    font-weight: bold;
+    margin-top: 0px;
+}
+
+#memberListView .member .bio .longBio, #LeadershipTabs .k-content .member .bio .longBio
+{
+    display: none;
+}
+
+#inline .bio .shortBio, #inline .readMore
+{
+    display: none;
+}
+
+.memberTitle
+{
+    color: #6e7377;
+    font-size: 1.1em;
+    font-style: italic;
+    font-weight: 100;
+    margin-bottom: 15px;
+}
+
+a.readMore, #inline a, #inline a:link, #inline a:active, #inline a:visited
+{
+    color: #547105;
+}
+
+#inline .printMe, .close-x
+{
+    float: right;
+}
+
+#printThis
+{
+    box-sizing: border-box;
+    cursor: pointer;
+    display: block;
+    overflow: auto;
+}
+
+.ltIE10 #filterStrip
+{
+    display: block;
+    overflow: auto;
+}
+
+.ltIE10 #filterStrip > div
+{
+    display: block;
+    float: left;
+    margin-right: 20px;
+    min-height: 60px;
+    padding: 10px 30px;
+}
+
+
+.ltIE10 #filterStrip > div > span
+{
+}
+
+.ltIE10 #memberListView, .ltIE10 #LeadershipTabs .k-content .memberListView
+{
+    display: block;
+    overflow: auto;
+}
+
+.ltIE10 #memberListView .member, .ltIE10 #LeadershipTabs .k-content .member
+{
+    float: left;
+    min-height: 250px;
+}
+
+.ltIE10 #memberListView .member:nth-of-type(odd), .ltIE10 #LeadershipTabs .k-content .member:nth-of-type(odd)
+{
+    margin-right: 3.5%;
+}
+@media(min-width: 768px)
+{
+    #filterStrip, #filterStrip k-tabstrip-items
+    {
+        flex-flow: row nowrap;
+    }
+
+    #filterStrip > div, #filterStrip k-tabstrip-items li
+    {
+        border: none;
+        flex: 1 19%;
+        max-width: 19%;
+        padding: 0;
+    }
+
+    #memberListView .member, #LeadershipTabs .k-content .member
+    {
+        width: 48%;
+    }
+}

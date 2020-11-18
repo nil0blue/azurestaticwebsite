@@ -1,0 +1,66 @@
+﻿/**
+* #.# Owl Carousel
+*
+* @summary: This file contains the css for the project's Owl Carousel
+*
+* @resources:
+*
+* @media-queries: Yes
+*
+*/
+
+.owl-carousel .owl-item img
+{
+    width: auto !important;
+    max-width:100%;
+}
+
+.owl-carousel .container
+{
+    max-width: none;
+    width: auto;
+}
+
+.owl-prev, .owl-next
+{
+    background: transparent url("../images/slideshow-arrows.png") no-repeat scroll 0 0 !important;
+    cursor: pointer;
+    height: 54px;
+    padding-bottom: 42px;
+    position: absolute;
+    text-indent: -9999px;
+    top: 25%;
+    width: 21px;
+}
+
+.owl-prev
+{
+    background-position: 0 0 !important;
+    left: -20px;
+}
+
+.owl-prev:hover
+{
+    background-position: 0 100% !important;
+}
+
+.owl-next
+{
+    background-position: 100% 0 !important;
+    right: -20px;
+}
+
+.owl-next:hover
+{
+    background-position: 100% 100% !important;
+}
+
+.OwlSlide.container
+{
+    padding: 15px 30px;
+}
+
+.owl-theme .owl-dots .owl-dot.active span, .owl-theme .owl-dots .owl-dot:hover span
+{
+    background: #F68D2D none repeat scroll 0 0;
+}

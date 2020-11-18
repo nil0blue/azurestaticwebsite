@@ -1,0 +1,19 @@
+﻿/**
+* #.# Sitemap Page
+*
+* @summary: This file contains the css for Sitemap page
+*
+* @resources:
+*
+* @media-queries: No
+*
+*/
+/*Sitemap*/
+
+ul.childPageList {
+    padding-left:25px;
+}
+ul.childPageList > li > a{
+    font-size:.75em;
+    padding:5px;
+}

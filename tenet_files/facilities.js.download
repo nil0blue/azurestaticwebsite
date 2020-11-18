@@ -1,0 +1,632 @@
+﻿/**
+ * This file contains the code for the facilities dynamic module widget.  
+ * The only template can be found here:
+ *  ~/ResourcePackages/TenetHealth/MVC/Views/Facility/
+ *
+ * @summary Tenet Health facility widget js 
+ *
+ * @requires jquery,
+ *           kendo-ui(http://docs.telerik.com/kendo-ui/api/javascript/ui/listview),
+ * 
+ * @version 1.0
+ * 
+ */
+
+var MappedFacilityManager = function () {
+    this.mappedFacilities = [];
+    this.getFacilityByMarkerId = function (id) { };
+    this.getFacilitiesByType = function (type) { };
+    this.sortFacilitiesByDistance = function (origin) { };
+    this.addFacility = function (facility) {
+        this.mappedFacilities.push(facility);
+    };
+}
+
+var MappedFacility = function (facility, marker) {
+    this.Facility = facility;
+    this.Marker = marker;
+    this.Type = this.Facility.FacilityClassName.split('-').join(' ').replace(/\w+/g, function (w) { return w[0].toUpperCase() + w.slice(1).toLowerCase(); });
+    this.Visible = true;
+}
+
+var FacilitiesModule = function ($widgetContext) {
+
+    this.$widgetContext = $widgetContext;
+
+    // Sets up the datasource to get all facilities
+    this.facilitiesDataSource = this.createFacilitiesDataSource();
+    this.facilityTypesDataSource = this.createFacilityTypesDataSource();
+
+    this.NoItemsInListMessage = "No facilities are within your search area";
+    // Will store the array of facilities returned by the service
+    // and will be used to plot the Google Maps pins.
+    this.facilityMapLocations = null;
+
+    // The Kendo ListView DOM elements. 
+    this.$facilityListWrapper = $(".facilities-list-wrapper", $widgetContext);
+    this.$facilityList = $(".facilities-list", $widgetContext);
+    this.$facilityListItem = $(".facility", this.$facilityList);
+    this.$emptyFacilityListMessage = $(".emptyFacilityListMessage", $widgetContext);
+
+    this.$facilityTypeList = $('.facilities-type-list', $widgetContext);
+    this.$facilityTypeListItem = $(".facility-type", this.$facilityTypeList);
+
+    // Location mapview properties
+    this.marker = null;
+    this.map = null;
+    this.$mapElement = $(".google-map", $widgetContext);
+    this.$mapWrapper = $(".facilities-map-wrapper", $widgetContext);
+    this.mapInfoWindow = new google.maps.InfoWindow({
+        disableAutoPan: true
+    });
+    this.markersPlottedOnTheMap = [];
+
+    this.markerDict = {};
+    this.markerClusterer = null;
+    this.listDict = {};
+    this.mappedFacilities = [];
+    this.mappedFacilityManager = new MappedFacilityManager();
+
+    // This location is the center of the united states 
+    this.defaultLatLng = { lat: 40.437541, lng: -95.690918 };
+    this.defaultZoom = 4;
+
+    // Search input elements
+    this.$searchContainer = $(".facilities-address-search-wrapper", $widgetContext)
+    this.$addressInput = $("input.addressInput", $widgetContext)[0];
+    this.$radiusDropdown = $(".radiusDropdown", $widgetContext)[0];
+    this.$searchButtons = $(".search-button", $widgetContext);
+    this.placeMarkerOnSearch = true;
+    this.searchLatLng = this.defaultLatLng;
+    this.searchRad = this.defaultLatLng;
+    this.autocomplete = null;
+    this.centerPoint = null;
+    this.defaultFilter = { field: "Id", operator: "eq", value: null };
+    this.currentMarkerId = null;
+    this.searchMarker = null;
+    this.isFullScreen = true;
+    this.reorder = true;
+    this.init();
+}
+
+/**
+ * @summary Calls the facility module functions. 
+ *  
+ */
+FacilitiesModule.prototype.init = function () {
+    var _self = this;
+
+    _self.createFacilityListView();
+    _self.createFacilityTypesListView();
+    _self.createMapInstance();
+
+    _self.initAutoComplete();
+
+
+    // Hook into window resize to ensure map is dimensionally consistent with parent container
+    $(window).resize(function () {
+        google.maps.event.trigger(_self.map, "resize");
+        if (_self.centerPoint)
+            _self.centerMap(_self.centerPoint);
+    });
+
+    $(_self.$mapWrapper).resize(function () {
+        google.maps.event.trigger(_self.map, "resize");
+        if (_self.centerPoint)
+            _self.centerMap(_self.centerPoint);
+    });
+
+    _self.$searchButtons.on("click", function () {
+        var address = _self.autocomplete.getPlace()
+        _self.setAddressLocationOnMap(address);
+        var rad = _self.milesToGoogleDistance(_self.$radiusDropdown.value);
+        var circle = new google.maps.Circle({ radius: rad, center: address.geometry.location });
+        _self.updateDataState(circle.getBounds());
+    });
+
+
+    _self.$facilityListWrapper.hide();
+}
+
+/**
+ * @summary Applies the google address to the map
+ */
+FacilitiesModule.prototype.setAddressLocationOnMap = function (address) {
+    var _self = this;
+    if (address == null || !address.geometry) return;
+
+    if (_self.placeMarkerOnSearch) {
+        _self.plotMarkerOnMap(address, true);
+    }
+    _self.setMapBounds(_self.$radiusDropdown.value, address.geometry.location);
+
+}
+
+/**
+ * @summary Plots a marker on the map
+ */
+FacilitiesModule.prototype.plotMarkerOnMap = function (address, centerMap) {
+    var _self = this;
+    var marker = _self.searchMarker;
+
+    if (marker != null)
+        marker.setMap(null);
+
+    marker = _self.getSearchMarker(address);
+    if (marker == null)
+        return;
+
+    marker.setMap(_self.map);
+
+    if (centerMap)
+        _self.centerMap(marker.getPosition());
+
+    _self.searchMarker = marker;
+}
+
+/**
+ * @summary Return a google maps marker
+ */
+FacilitiesModule.prototype.getSearchMarker = function (address) {
+    var _self = this;
+
+    if (address == null || !address.geometry || !address.address_components)
+        return null;
+
+    return new google.maps.Marker({
+        position: address.geometry.location,
+        title: [(address.address_components[0] && address.address_components[0].short_name || ''),
+        (address.address_components[1] && address.address_components[1].short_name || ''),
+        (address.address_components[2] && address.address_components[2].short_name || '')]
+            .join(' ')
+    });
+}
+
+/**
+ * @summary Returns a Kendo datasource that is tied to the 
+ * facilities web api method that gets all facilities. 
+ * 
+ * Saves the array of facilities to a variable that will be used
+ * to plot the facility pins on the map. 
+ *  
+ */
+
+FacilitiesModule.prototype.createFacilitiesDataSource = function () {
+    var _self = this;
+
+    return new kendo.data.DataSource({
+        transport: {
+            read: {
+                url: "/api/facilities/GetFacilities",
+                type: 'GET',
+                dataType: "json"
+            }
+        },
+        schema: {
+            data: "Facilities"
+        },
+
+        requestEnd: function (api) {
+            if (api.response) {
+                _self.facilityMapLocations = api.response.Facilities;
+                _self.placePinsOnMap();
+            }
+        }
+    });
+}
+
+/**
+ * @summary Returns a Kendo datasource that is tied to the 
+ * facility types web api method that gets all facility types. 
+ * 
+ * Saves the array of facility types to a variable that will be used
+ * to create the type filter. 
+ *  
+ */
+
+FacilitiesModule.prototype.createFacilityTypesDataSource = function () {
+    var _self = this;
+    return new kendo.data.DataSource({
+        transport: {
+            read: {
+                url: "/api/facilities/GetFacilities",
+                type: 'GET',
+                dataType: "json"
+            }
+        },
+        schema: {
+            data: "FacilityTypes"
+        }
+    });
+}
+
+/**
+ * @summary Creates a Kendo list view using the facilities datasource. 
+ *  
+ */
+FacilitiesModule.prototype.createFacilityListView = function () {
+    var _self = this;
+    _self.$facilityList.kendoListView({
+        dataSource: _self.facilitiesDataSource,
+        template: kendo.template($("#facilitiesTemplate").html()).bind(this),
+        change: function () {
+        },
+        dataBound: function () {
+        }
+    });
+    $(_self.$facilityListItem).live("click", function () {
+        var dataId = $(this).data("id");
+        _self.currentMarkerId = dataId;
+        var marker = _self.markerDict[dataId];
+        _self.reorder = false;
+        google.maps.event.trigger(marker, "click");
+        _self.reorder = true;
+    });
+
+}
+
+/**
+ * @summary Creates a Kendo list view using the facility types datasource. 
+ *  
+ */
+FacilitiesModule.prototype.createFacilityTypesListView = function () {
+    var _self = this;
+    _self.$facilityTypeList.kendoListView({
+        dataSource: _self.facilityTypesDataSource,
+        template: kendo.template($("#facilitiesTypeTemplate").html()),
+        dataBound: function () {
+            $(':checkbox', _self.$facilityTypeList).on("click", function () {
+                var _checkbox = this;
+                var markersToHide = [];
+                var markersToShow = [];
+                $.each($(':checkbox', _self.$facilityTypeList), function (idx, value) {
+                    if (!value.checked)
+                        markersToHide = markersToHide.concat(_self.mappedFacilities.filter(function (val) { return val.Type.replace(/\W+/g, ' ').toLowerCase() == $(value).data('type').replace(/\W+/g, ' ').toLowerCase() }));
+                    else
+                        markersToShow = markersToShow.concat(_self.mappedFacilities.filter(function (val) { return val.Type.replace(/\W+/g, ' ').toLowerCase() == $(value).data('type').replace(/\W+/g, ' ').toLowerCase() }));
+                });
+
+                $.each(markersToHide, function (idx, value) {
+                    value.Marker.setMap(null);
+                    value.Visible = false;
+                });
+
+                $.each(markersToShow, function (idx, value) {
+                    value.Marker.setMap(_self.map);
+                    value.Visible = true;
+                });
+
+
+                var markers = [];
+                $.each(_self.mappedFacilities, function (idx, value) {
+                    if (value.Visible)
+                        markers.push(value.Marker);
+                });
+
+                //_self.filterFacilityList(markers);
+                _self.updateDataState();
+                _self.updateClusters(markers);
+                if (_self.searchMarker) {
+                    _self.updateDistances(_self.searchMarker.position, markers)
+                }
+            });
+        }
+    });
+}
+
+/**
+ * @summary Creates an instance of Google Maps using the Google Maps API.
+ *  
+ */
+FacilitiesModule.prototype.createMapInstance = function () {
+    var _self = this;
+    var markers;
+    _self.map = new google.maps.Map($('.google-map-with-pins', _self.$widgetContext)[0], {
+        center: _self.defaultLatLng,
+        zoom: _self.defaultZoom
+    });
+
+    _self.map.addListener('zoom_changed', function () {
+        if (_self.map && _self.map.zoom >= 10)
+            _self.showFacilityList();
+
+        //_self.updateDataState();
+    });
+}
+
+
+FacilitiesModule.prototype.updateDataState = function (bounds) {
+    // .2 seconds after the center of the map has changed,
+    // get a list of the markers within the map bounds
+    var _self = this;
+    window.setTimeout(function () {
+        if (!bounds)
+            bounds = _self.map.getBounds();
+        markers = _self.getMarkersInMapBounds(bounds);
+
+
+        if (_self.searchMarker) {
+            _self.sortFacilityListByDistance(_self.searchMarker.position);
+        }
+
+        _self.filterFacilityList(markers);
+
+        if (_self.searchMarker) {
+            _self.updateDistances(_self.searchMarker.position, markers);
+        }
+
+        _self.highlightActivePin();
+
+        if (_self.$facilityList.children().length == 0) {
+            _self.$emptyFacilityListMessage.html(_self.NoItemsInListMessage);
+        }
+        else {
+            _self.$emptyFacilityListMessage.html("");
+        }
+
+        if (_self.searchMarker)
+            _self.updateDistances(_self.searchMarker.position, markers)
+
+    }, 200);
+}
+
+
+/**
+ * @summary Filters the datasource down to only the pins that appear on the map  
+ *  
+ */
+FacilitiesModule.prototype.filterFacilityList = function (markerList) {
+    var _self = this;
+    var itemCeiling = 0;
+
+    var _flt = { logic: "or", filters: [_self.defaultFilter] };
+    for (var i = 0; i < markerList.length; i++) { // looping through the markers plotted on the map       
+        var markerId = _self.listDict[markerList[i].title];
+        var addToFilter = false;
+        $.each(_self.mappedFacilities, function (idx, value) {
+            if (value.Facility.Id == markerId && value.Visible)
+                addToFilter = true;
+            return addToFilter === false;
+        });
+
+        if (addToFilter) {
+            _flt.filters.push({ field: "Id", operator: "eq", value: markerId });
+        }
+    }
+
+    _self.facilitiesDataSource.filter(_flt);
+}
+
+FacilitiesModule.prototype.sortFacilityListByDistance = function (fromPosition) {
+    var _self = this;
+    var _dsSort = [];
+    _dsSort.push({
+        field: "Address", dir: "asc", compare: function (a, b) {
+            var compareLatLnga = new google.maps.LatLng({ lat: a.Address.Latitude, lng: a.Address.Longitude });
+            var compareLatLngb = new google.maps.LatLng({ lat: b.Address.Latitude, lng: b.Address.Longitude });
+            var testComparea = google.maps.geometry.spherical.computeDistanceBetween(fromPosition, compareLatLnga);
+            var testCompareb = google.maps.geometry.spherical.computeDistanceBetween(fromPosition, compareLatLngb);
+            return (testComparea - testCompareb);
+        }
+    });
+    _self.facilitiesDataSource.sort(_dsSort);
+
+}
+
+/**
+ * @summary Returns an array of markers within the map bounds. 
+ *  
+ */
+FacilitiesModule.prototype.getMarkersInMapBounds = function (bounds) {
+
+    var _self = this;
+    if (!bounds)
+        bounds = _self.map.getBounds();
+
+    // A variable to capture all the markers that are found
+    var _markersInBounds = [];
+
+    for (var i = 0; i < _self.markersPlottedOnTheMap.length; i++) { // looping through the markers plotted on the map       
+        if (_self.markersPlottedOnTheMap[i].visible && bounds.contains(_self.markersPlottedOnTheMap[i].position)) {
+            _markersInBounds.push(_self.markersPlottedOnTheMap[i]);
+        }
+    }
+    return _markersInBounds;
+}
+
+
+
+/**
+ * @summary Centers the Google map on the position passed in (Lat/Lng)
+ *  
+ */
+FacilitiesModule.prototype.centerMap = function (position /* You can get position from  any marker -> marker.getPosition();*/) {
+    var _self = this;
+
+    _self.centerPoint = position;
+    _self.map.panTo(position); // setCenter takes a LatLng position object
+}
+
+/**
+ * @summary Creates or re-creates marker clusters based on the markers passed into the function
+ *  
+ */
+FacilitiesModule.prototype.updateClusters = function (markers) {
+    var _self = this;
+
+    if (_self.markerClusterer == null) {
+        _self.markerClusterer = new MarkerClusterer(this.map, markers, {
+            styles: [{
+                url: "../images/default-source/facilities/cluster-images/m1.png",
+                width: 53,
+                height: 53,
+                textSize: 20,
+                textColor: "white",
+            }],
+            maxZoom: 10
+        });
+
+        google.maps.event.addListener(_self.markerClusterer, "click", function (c) {
+            if (_self.map.zoom >= 9)
+                _self.centerPoint = c.center_;
+            else
+                _self.centerPoint = null;
+        });
+    }
+    else {
+        _self.markerClusterer.clearMarkers();
+        _self.markerClusterer.addMarkers(markers);
+    }
+}
+
+/**
+ * @summary Places the location pins on the Google Map using the locations datasource. 
+ *  
+ */
+FacilitiesModule.prototype.placePinsOnMap = function () {
+
+    var _self = this;
+
+    var _markerPosition;
+    _self.markersPlottedOnTheMap = [];
+    _self.markerDict = {};
+    _self.listDict = {};
+
+    for (i = 0; i < _self.facilityMapLocations.length; i++) {
+
+        _markerPosition = new google.maps.LatLng(_self.facilityMapLocations[i].Address.Latitude, _self.facilityMapLocations[i].Address.Longitude);
+
+        _self.marker = new google.maps.Marker({
+            position: _markerPosition,
+            map: _self.map,
+            icon: _self.facilityMapLocations[i].PinImageUrl,
+            title: _self.facilityMapLocations[i].Address.Street
+        });
+
+        _self.markerDict[_self.facilityMapLocations[i].Id] = _self.marker;
+        _self.listDict[_self.marker.title] = _self.facilityMapLocations[i].Id;
+        _self.markersPlottedOnTheMap.push(_self.marker);
+
+        _self.mappedFacilities.push(new MappedFacility(_self.facilityMapLocations[i], _self.marker));
+
+        google.maps.event.addListener(_self.marker, 'click', (function (_marker, i) {
+            // Re-Sort Array to Show clicked location at top.
+
+            return function () {
+                var content = '<div id="pinContent" >' +
+                    '<div class="pinImage"><img src="' + _self.facilityMapLocations[i].PinImageUrl + '" /></div><div class="pinInfo"><p class="pin-text">' + _self.facilityMapLocations[i].Title + '<br />' +
+                    _self.facilityMapLocations[i].Address.Street + '<br />' + _self.facilityMapLocations[i].Address.City + ', ' + _self.facilityMapLocations[i].Address.StateCode + ' - ' + _self.facilityMapLocations[i].Address.Zip + '<br/><a href="' + _self.facilityMapLocations[i].WebsiteUrl + '" class="pin-button">Facility Website</a>'
+                    + '<br /><a target="_blank" href="https://www.google.com/maps/dir/Current+Location/' + _self.facilityMapLocations[i].Address.Latitude + ',' + _self.facilityMapLocations[i].Address.Longitude + '" class="pin-button">Get Directions</a>'
+                    + '</p></div></div>';
+
+                _self.centerPoint = _marker.position;
+
+                if (_self.isFullScreen)
+                    _self.showFacilityList();
+                else
+                    _self.centerMap(_marker.position);
+
+                if (_self.reorder)
+                    _self.sortFacilityListByDistance(_marker.position);
+
+                _self.filterFacilityList(_self.getMarkersInMapBounds());
+                _self.mapInfoWindow.setContent(content);
+                _self.mapInfoWindow.open(_self.map, _marker);
+                _self.currentMarkerId = _self.facilityMapLocations[i].Id;
+                _self.highlightActivePin();
+
+            }
+        })(_self.marker, i));
+
+    }
+    _self.updateClusters(_self.markersPlottedOnTheMap);
+}
+
+FacilitiesModule.prototype.initAutoComplete = function () {
+    var _self = this;
+    _self.autocomplete = new google.maps.places.Autocomplete(_self.$addressInput);
+    _self.autocomplete.addListener('place_changed', function () {
+
+        var address = _self.autocomplete.getPlace();
+        if (address == null || !address.geometry) return;
+        _self.setAddressLocationOnMap(address);
+
+        _self.showFacilityList();
+        _self.updateDataState();
+    });
+}
+
+FacilitiesModule.prototype.milesToGoogleDistance = function (miles) {
+    // Google Maps use meters as unit of distance. This converts miles to meters
+    var metersPerMile = 1610;
+    return (miles * metersPerMile);
+}
+
+FacilitiesModule.prototype.googleDistanceToMiles = function (meters) {
+    // Google Maps use meters as unit of distance. This converts miles to meters
+    var metersPerMile = 1610;
+    return (meters / metersPerMile);
+}
+
+FacilitiesModule.prototype.setMapBounds = function (radiusInMiles, center) {
+    //set the Google Map to center on lat/lng containing the radius
+    var _self = this;
+    var rad = _self.milesToGoogleDistance(radiusInMiles);
+    var circle = new google.maps.Circle({ radius: rad, center: center });
+    _self.map.fitBounds(circle.getBounds());
+}
+
+FacilitiesModule.prototype.highlightActivePin = function () {
+    var _self = this;
+    var match = $('*[data-id="' + _self.currentMarkerId + '"]', _self.$facilityList);
+    match.siblings().removeClass("activePin");
+    match.each(function () {
+        $(this).addClass("activePin");
+    });
+}
+
+FacilitiesModule.prototype.updateDistances = function (center, markers) {
+    var _self = this;
+    for (var i = 0; i < markers.length; i++) { // looping through the markers plotted on the map       
+        var markerId = _self.listDict[markers[i].title];
+        var match = $('*[data-id="' + markerId + '"] .distanceFrom', _self.$facilityList);
+        var distanceBetween = google.maps.geometry.spherical.computeDistanceBetween(center, markers[i].position);
+        match.html(_self.googleDistanceToMiles(distanceBetween).toFixed(1) + " miles");
+    }
+}
+
+/**
+ * @summary toggle full screen map without list and vice versa.
+ */
+FacilitiesModule.prototype.showFacilityList = function (bounds) {
+    var _self = this;
+    if (!_self.isFullScreen)
+        return;
+
+    _self.$mapWrapper.removeClass('fullScreen');
+
+    window.setTimeout(function () {
+        google.maps.event.trigger(_self.map, "resize");
+        _self.isFullScreen = false;
+
+        _self.$facilityListWrapper.removeClass('fullScreen');
+        if (_self.centerPoint)
+            _self.centerMap(_self.centerPoint);
+        _self.$facilityListWrapper.show();
+        _self.updateDataState();
+    }, 500);
+}
+
+$(window).load(function () {
+    var $widgetContext = $('.facilities-module');
+
+    // Check to see if the facilities widget is on the page.
+    if (!$widgetContext || !$widgetContext.length)
+        return;
+
+    // Create new copy/copies of facilities module.
+    // The init function gets called in the constructor of the module
+    $widgetContext.each(function () {
+        new FacilitiesModule($(this));
+    });
+});

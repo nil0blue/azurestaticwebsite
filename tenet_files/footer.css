@@ -1,0 +1,241 @@
+﻿/**
+* #.# Footer
+*
+* @summary: This file contains the css for the footer
+*
+* @resources:
+*    ~ResourcePackages\TenetHealth\GridSystem\Templates\footer.html
+*
+* @media-queries: Yes
+*
+*/
+
+/*#region  Footer Styles */
+#mainFooter 
+{
+    background-color: #2b3990;
+    box-sizing: border-box;
+    color: #f1f3f5;
+    display: block;
+    padding: 30px 10px;
+    position: relative;
+}
+
+#mainFooter:before 
+{
+    background-color: #00a79d;
+    content: "";
+    display: block;
+    height: 13px;
+    left: 0;
+    position: absolute;
+    top: -13px;
+    width: 100%;
+}
+
+#mainFooter .footer
+{
+    max-width: 1120px;
+    min-height: 300px;
+}
+
+#mainFooter .footer-contact
+{
+    margin-bottom: 25px;
+}
+
+#mainFooter .footer-contact .address
+{
+    margin: 10px 0;
+}
+
+#mainFooter .footer-contact .phone a
+{
+    border-bottom: 1px solid #18466A;
+    color: #f1f3f5;
+    display: block;
+    font-weight: normal;
+    padding-bottom: 25px;
+}
+
+#mainFooter .footer-navigation .nav li
+{
+    margin-top: 7px;
+}
+
+#mainFooter .footer-navigation .nav li a
+{
+    color: #f1f3f5;
+    padding: 0;
+}
+
+#mainFooter .footer-navigation .nav-pills > li.active > a,
+#mainFooter .footer-navigation .nav-pills > li.focus > a,
+#mainFooter .footer-navigation .nav-pills > li.hover > a,
+#mainFooter .footer-navigation .nav-pills > li > a:hover,
+#mainFooter .footer-navigation .nav-pills > li > a:link,
+#mainFooter .footer-navigation .nav-pills > li > a:visited {
+    background-color: #2b3990;
+    /* change the HEX value in the template CSS block to match */
+}
+
+#mainFooter .copyright
+{
+    font-size: 0.75em;
+    line-height: 15px;
+    padding-top: 25px;
+}
+
+#mainFooter .footer-logo
+{
+    display: inline-block;
+    float: right;
+    line-height: 16px;
+    max-width: 140px;
+    text-align: left;
+}
+
+#mainFooter .footer-logo .accent-text
+{
+    font-style: italic;
+}
+
+@media only screen and (min-width : 320px)
+{
+}
+
+@media only screen and (min-width : 480px)
+{
+}
+
+@media only screen and (min-width : 768px)
+{
+
+    #mainFooter .footer-contact,
+    #mainFooter .footer-navigation 
+    {
+        border-right: 1px solid #f3f3f3;
+        height: 150px;
+    }
+
+    #mainFooter .footer-contact 
+    {
+        border-right: 1px solid #f3f3f3;
+    }
+
+    #mainFooter .footer-contact .phone a
+    {
+        border-bottom: none;
+    }
+
+    #mainFooter .footer-navigation .nav li
+    {
+        float: right;
+    }
+
+    #mainFooter .footer-navigation .nav li a
+    {
+        font-size: 12px;
+        padding: 0 5px;
+    }
+}
+
+@media only screen and (min-width : 992px)
+{
+}
+
+@media only screen and (min-width : 1200px)
+{
+}
+
+/*#endregion*/
+
+
+
+
+
+
+@media (max-width: 768px)
+{
+
+    .dropdown-menu > ul
+    {
+        background-color: transparent;
+        border: 0 none;
+        box-shadow: none;
+        float: none;
+        margin-top: 0;
+        position: static;
+        width: auto;
+        margin-left: 0;
+        padding-left: 0;
+        box-sizing: border-box;
+    }
+
+    .dropdown-menu > ul > li
+    {
+        list-style: outside none none;
+        box-sizing: border-box;
+    }
+
+    .dropdown-menu > ul > li > a
+    {
+        background-color: #e7e7e7;
+        display: block;
+        color: #555;
+        padding: 5px 10px;
+        box-sizing: border-box;
+    }
+
+    .navbar-nav > li:hover > .dropdown-menu, .navbar-nav > li > .dropdown-menu
+    {
+        display: none;
+    }
+
+    .navbar-nav > li.open > .dropdown-menu
+    {
+        display: block;
+    }
+
+    /*#pageBanner
+    {
+        overflow: visible;
+    }
+
+    #pageBanner > div
+    {
+        height: auto;
+    }
+
+    #pageBanner > .sfimageWrp > img
+    {
+        position: relative;
+    }*/
+
+    .HeaderSecondaryNavRow .nagivation-simpleList ul, .HeaderSecondaryNavRow
+    {
+        display: none;
+    }
+
+    .FooterNavigation ul.simpleNav > li
+    {
+        display: block;
+    }
+
+    #mainFooter ul.simpleNav > li > a
+    {
+        font-size: 14px;
+    }
+
+    .FooterNavigation .simpleNav
+    {
+        float: none;
+        margin-top: 20px;
+    }
+
+    .FooterLogo
+    {
+        max-width: 175px;
+        margin-top: 25px;
+    }
+}

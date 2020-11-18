@@ -1,0 +1,171 @@
+﻿/**
+ * This file contains the code for the leadership (teammembers) 
+ * dynamic module template found here:
+ *  ~/MVC/Views/Member/List.MembersList.cshtml.
+ *
+ * @summary Accordion list template javascript
+ *
+ * @requires jquery,
+ *           kendo,
+ *           sitefinity web services
+ * 
+ * @version 1.0
+ * 
+ */
+
+
+/**
+ * @summary Leadership module with properties for the various elements of the module.
+ *
+ * 
+ * @property wrapper: used to determain if the accordion is on the page.
+ * 
+ */
+var LeadershipModule = function () {
+    this.leadershipMembersDataSource = this.setDataSource("/api/leadership/members?$expand=Picture");
+    this.leadershipFilterStripDataSource = this.setDataSource("/api/leadership/flat-taxa?$filter=TaxonomyId eq f81144c6-1b16-685b-9a39-ff0000dee12a");
+
+}
+
+/**
+ * @summary Initializes the leadership module.  
+ * 
+ */
+LeadershipModule.prototype.init = function () {
+
+    // Store a reference to the Accordion object.
+    var _self = this;
+
+    _self.createTabView();
+    _self.createFilterStripListView();
+    _self.createMemberListView();
+    _self.attachEvents();
+}
+LeadershipModule.prototype.createFilterStripListView = function () {
+    var _self = this;
+    var filterstrip = $("#filterStrip").kendoListView({
+        dataSource: _self.leadershipFilterStripDataSource,
+        template: kendo.template($("#groupTemplate").html()),
+        selectable: true,
+        change: function () {
+            var idx = this.select().index();
+            var thisItem = this.dataSource.view()[idx];
+            _self.leadershipMembersDataSource.filter({
+                field: "leadershipgroups",
+                operator: function (itemValue, value) {
+                    return itemValue && itemValue.find(function (item) {
+                        return item === value;
+                    });
+                },
+                value: thisItem.Id
+            });
+
+        },
+        dataBound: function () {
+            var listView = $("#filterStrip").data("kendoListView");
+            listView.select(listView.element.children().first());
+        }
+    })
+}
+LeadershipModule.prototype.createMemberListView = function () {
+    var _self = this;
+
+    var memberList = $("#memberListView").kendoListView({
+        dataSource: _self.leadershipMembersDataSource,
+        template: kendo.template($("#memberTemplate").html())
+
+    });
+}
+LeadershipModule.prototype.createTabView = function () {
+    var _self = this;
+    var filterstrip = $("#LeadershipTabs").kendoTabStrip({
+        dataSource: _self.createLeadershipDataSource(),
+        dataTextField: "Title",
+        dataContentField: "Title",
+        select: function (e) {
+            var template = kendo.template($("#memberTemplate").html());
+            $(e.contentElement).html(template(this.dataSource.at($(e.item).index())));
+        },
+        scrollable: false,
+        template: kendo.template($("#groupTemplate").html())
+    });
+    if(filterstrip)
+    setTimeout(function () { filterstrip.data("kendoTabStrip").select(0); }, 400);
+}
+
+LeadershipModule.prototype.attachEvents = function () {
+    var _self = this;
+
+    $("#btnPrint").live("click", function () {
+        var divContents = $("#printThis").html();
+        var printWindow = window.open('', '', 'height=400,width=800');
+        printWindow.document.write('<html><head><title>Tenet Health</title><style>.member img, #inline img {float:left; margin-right:15px;}.member .bio {}.member .bio h3 {font-weight:bold;margin-top:0px;}#listview .member .bio .longBio {display:none;}#inline .bio .shortBio, .readMore {display:none;}.memberTitle {font-size:18px; font-style:italic; font-weight:100; color:#6e7377;margin-bottom:15px;}</style>');
+        printWindow.document.write('</head><body >');
+        printWindow.document.write(divContents);
+        printWindow.document.write('</body></html>');
+        printWindow.document.close();
+        printWindow.print();
+    });
+    var lightbox;
+    // Bind as an event handler
+    $(".readMore").live('click', function (event) {
+        var updateHTML = $(this).parents(".member").html();
+        $("#inline #printThis .member").html(updateHTML);
+        lightbox = lity("#inline");
+    });
+    $(".closeMe, .close-x").live('click', function (event) {
+        lightbox.close();
+        location.hash = '';
+
+    });
+    $(document).on('lity:ready', function (event, instance) {
+        var close = $(".bottomActions a.closeMe", event.target);
+        close.focus();
+        console.log($(":focus"));
+        setTimeout(function () { $(".bottomActions a.closeMe").focus(); console.log($(":focus"));  }, 1000);
+    });
+}
+LeadershipModule.prototype.setDataSource = function (api) {
+    return dataSource = new kendo.data.DataSource({
+        transport: {
+            read: {
+                url: api,
+                type: "get",
+                dataType: "json"
+            }
+        },
+        schema: {
+            data: "value"
+        }
+    });
+}
+LeadershipModule.prototype.createLeadershipDataSource = function () {
+    var _self = this;
+
+    return new kendo.data.DataSource({
+        transport: {
+            read: {
+                url: "/api/LeadershipGroups/GetLeadershipGroups",
+                type: 'GET',
+                dataType: "json"
+            }
+        },
+        schema: {
+            data: "LeadershipGroups"
+        }
+    });
+}
+
+
+$(document).ready(function () {
+    var leadership = $("#leadership");
+
+    // Check to see if the leadership widget is on the page.
+    if (!leadership || !leadership.length)
+        return;
+
+    leadership = new LeadershipModule(this)
+
+    // initialize the leadership module
+    leadership.init();
+});

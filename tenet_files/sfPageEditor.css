@@ -1,0 +1,54 @@
+﻿/**
+* #.# Sitefinity Page Editor Styles
+*
+* @summary: This file contains the css for the Sitefinity/Action/Edit pages 
+*
+* @resources:
+*
+* @media-queries: NO
+*
+*/
+.sfPageEditor .navbar-brand
+{
+    display: none;
+}
+
+.sfPageEditor .header-logo,
+.sfPageEditor .inner-banner-image
+{
+    display: block;
+}
+
+.sfPageEditor .inner-banner .rdTable img
+{
+    height: 350px;
+}
+
+.sfPageEditor .OwlContainer
+{
+    background-color: #eee;
+    border: 1px solid #aaa;
+    box-sizing: border-box;
+    padding: 50px 10px;
+    position: relative;
+}
+
+.sfPageEditor .OwlContainer .OwlSlide
+{
+    background-color: #fff;
+    border: 1px solid #aaa;
+    margin: 20px 0;
+    padding: 20px;
+    width: 90%;
+}
+
+.sfPageEditor .adminOnlyContent
+{
+    display: block;
+}
+
+.sfPageEditor .owl-carousel
+{
+    display: block;
+    width: auto;
+}

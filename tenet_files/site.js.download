@@ -1,0 +1,64 @@
+﻿$(document).ready(function () {
+    var mainNav = $('.navbar ul.navbar-nav'), secondaryNav = $('.HeaderSecondaryNavRow .nagivation-simpleList ul');
+    var temp = secondaryNav.clone(true), lists = $('li', temp);
+    lists.each(function () {
+        $(this).addClass("hidden-desktop");
+        mainNav.append(this);
+    })
+    var phoneReg = /(?:(?:\+?1\s*(?:[.-]\s*)?)?(?:\(\s*([2-9]1[02-9]|[2-9][02-8]1|[2-9][02-8][02-9])\s*\)|([2-9]1[02-9]|[2-9][02-8]1|[2-9][02-8][02-9]))\s*(?:[.-]\s*)?)?([2-9]1[02-9]|[2-9][02-9]1|[2-9][02-9]{2})\s*(?:[.-]\s*)?([0-9]{4})(?:\s*(?:#|x\.?|ext\.?|extension)\s*(\d+))?/i;
+    var emailReg = /[A-Z0-9._-]+@[A-Z0-9.-]+\.[A-Z0-9.-]+/i;
+    $('.cardBlock').not(".processed").each(function (i, obj) {
+        $(this).find("p").each(function (i, obj) {
+            if ($(this).html().indexOf("href=") === -1) {
+                $(this).html($(this).html().replace(phoneReg, '<a href="tel:+$1$2$3$4">$&</a>').replace(emailReg, '<a href="mailto:$& "> $& </a>'));
+            }
+        });
+        $(this).addClass("processed");
+    });
+
+    //:: HANDLES IMAGE SOURCE TO BACKGROUND IMAGE :://
+    var ImageToBackground = function (image_selector, target_selector) {
+        var imgSrc = $(image_selector).attr("src");
+        $(target_selector).css("background-image", "url(" + imgSrc + ")");
+    }
+
+    ImageToBackground(".inner-banner-image img", ".inner-banner");
+    ImageToBackground(".header-logo img", ".navbar-brand");
+
+    var version = detectIE();
+    if (version && version < 10) {
+        $('body').addClass('ltIE10');
+    }
+    $(".hitTranscript").live('click', function (event) {
+        var Content = $(".transcriptContent", $(this).parents(".videoEmbed"));
+        lightbox = lity(Content[0]);
+    });
+
+
+})
+
+function detectIE() {
+    var ua = window.navigator.userAgent;
+
+    var msie = ua.indexOf('MSIE ');
+    if (msie > 0) {
+        // IE 10 or older => return version number
+        return parseInt(ua.substring(msie + 5, ua.indexOf('.', msie)), 10);
+    }
+
+    var trident = ua.indexOf('Trident/');
+    if (trident > 0) {
+        // IE 11 => return version number
+        var rv = ua.indexOf('rv:');
+        return parseInt(ua.substring(rv + 3, ua.indexOf('.', rv)), 10);
+    }
+
+    var edge = ua.indexOf('Edge/');
+    if (edge > 0) {
+        // Edge (IE 12+) => return version number
+        return parseInt(ua.substring(edge + 5, ua.indexOf('.', edge)), 10);
+    }
+
+    // other browser
+    return false;
+}
