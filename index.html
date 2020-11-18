@@ -583,7 +583,7 @@ Sys.Application._enableHistoryInScriptManager();
         <li class=""><a href="http://investor.tenethealth.com/" target="_self">For Investors</a></li>
 		<!-- <li class=""><a href="http://investor.tenethealth.com/" target="_self">Make An Appointment</a></li> -->
 		
-		<li class=""><a href="tenet.html" class="btn-primary" style="color: #ffffff;font-size: 20px;padding: 50px 14px;">Make An Appointment</a></li>
+		<li class=""><a href="javascript:ToggleChat();" class="btn-primary" style="color: #ffffff;font-size: 20px;padding: 50px 14px;">Make An Appointment</a></li>
 		
               <li class="hidden-desktop"><a href="https://www.tenethealth.com/accessibility-statement" target="_self">Accessibility</a></li><li class="hidden-desktop"><a href="https://secure.etenet.com/publicsite/default.asp" target="_blank">For Employees</a></li><li class="hidden-desktop"><a href="https://www.tenethealth.com/contact" target="_self">Contact</a></li></ul>
             </div><!-- /.navbar-collapse -->
@@ -953,17 +953,11 @@ $('.inner-banner-video').html(bannerContent);
 
             background-color: transparent;
 
-            background-image: url('data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0idXRmLTgiPz4KPCEtLSBHZW5lcmF0b3I6IEFkb2JlIElsbHVzdHJhdG9yIDI0LjEuMSwgU1ZHIEV4cG9ydCBQbHVnLUluIC4gU1ZHIFZlcnNpb246IDYuMDAgQnVpbGQgMCkgIC0tPgo8c3ZnIHZlcnNpb249IjEuMSIgaWQ9IkxheWVyXzEiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgeG1sbnM6eGxpbms9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkveGxpbmsiIHg9IjBweCIgeT0iMHB4IgoJIHdpZHRoPSI0OHB4IiBoZWlnaHQ9IjQ4cHgiIHZpZXdCb3g9IjAgMCA0OCA0OCIgZW5hYmxlLWJhY2tncm91bmQ9Im5ldyAwIDAgNDggNDgiIHhtbDpzcGFjZT0icHJlc2VydmUiPgo8cGF0aCBmaWxsPSIjRkZGRkZGIiBkPSJNNDcuMSwyMS45Yy0wLjEtMS40LTAuOS0yLjQtMS43LTIuM2MtMC42LDAuMS0xLDAuNy0xLjIsMS41bC0zLjksMC40Yy0wLjMtMi4zLTEuMS00LjUtMi4yLTYuNGw1LjctNC4yCgljMC44LDAuNywxLjcsMC45LDIuMywwLjVjMC44LTAuNiwwLjYtMi4yLTAuNS0zLjZjLTEtMS40LTIuNS0yLjEtMy4zLTEuNWMtMC43LDAuNS0wLjYsMi4xLDAuNCwzLjVsLTUuNSw0CgljLTEuMi0xLjUtMi42LTIuOS00LjItMy45bDEuOC0zLjJjMC44LDAuMiwxLjYsMCwxLjgtMC41YzAuNC0wLjctMC4yLTEuOS0xLjQtMi41QzM0LDMsMzIuNywzLDMyLjMsMy44Yy0wLjQsMC43LDAuMiwxLjgsMS4zLDIuNAoJTDMyLDkuM2MtMS42LTAuOS0zLjUtMS41LTUuNC0xLjhsMC4zLTMuN2MwLjgtMC4yLDEuNC0wLjYsMS41LTEuMmMwLjEtMC44LTEtMS42LTIuMy0xLjdjLTEuMy0wLjEtMi41LDAuNS0yLjYsMS4zCgljLTAuMSwwLjgsMC45LDEuNSwyLjIsMS43bC0wLjMsMy42Yy0wLjMsMC0wLjctMC4xLTEtMC4xYy0xLjYsMC0zLjIsMC4yLTQuNiwwLjdsLTEuMS0zLjJjMC43LTAuNSwxLjEtMS4xLDAuOS0xLjcKCWMtMC4zLTAuOC0xLjUtMS0yLjgtMC42QzE1LjYsMy4xLDE0LjcsNCwxNSw0LjhjMC4yLDAuNywxLjQsMSwyLjYsMC42bDEsMy4xYy0xLjgsMC43LTMuNCwxLjctNC44LDIuOUw5LjcsNi43CgljMC40LTAuOCwwLjQtMS42LDAtMi4xQzksMy45LDcuNyw0LDYuNyw1Yy0xLDAuOS0xLjMsMi4yLTAuNiwzQzYuNyw4LjYsOCw4LjUsOC45LDcuNmw0LjEsNC41Yy0xLjQsMS40LTIuNSwzLTMuMyw0LjhsLTUuMS0yLjEKCWMwLjEtMC4xLDAuMS0wLjIsMC4yLTAuM2MwLjYtMS4yLDAuNC0yLjUtMC4zLTIuOWMtMC43LTAuNC0xLjgsMC4zLTIuNCwxLjZjLTAuNiwxLjItMC40LDIuNSwwLjMsMi45YzAuNCwwLjIsMC45LDAuMSwxLjMtMC4zCglsNS42LDIuM2MtMC42LDEuNy0wLjksMy41LTAuOSw1LjRjMCwwLjMsMCwwLjcsMCwxTDMuOCwyNWMtMC4zLTAuOC0wLjktMS4zLTEuNS0xLjJjLTAuOCwwLjEtMS40LDEuMi0xLjMsMi42CgljMC4xLDEuNCwwLjksMi40LDEuNywyLjNjMC44LTAuMSwxLjMtMS4yLDEuMy0yLjVsNC41LTAuNGMwLjQsMi42LDEuNCw1LjEsMi44LDcuMWwtNi4yLDQuNmMtMS0xLjMtMi40LTItMy4xLTEuNAoJYy0wLjgsMC42LTAuNiwyLjIsMC41LDMuNmMxLDEuNCwyLjUsMi4xLDMuMywxLjVjMC41LTAuNCwwLjYtMS4zLDAuMi0yLjRsNi40LTQuN2MxLjIsMS40LDIuNywyLjYsNC4zLDMuNWwtMi4zLDQuMwoJYy0xLjEtMC42LTIuNC0wLjUtMi43LDAuMmMtMC40LDAuNywwLjIsMS45LDEuNCwyLjVjMS4yLDAuNywyLjUsMC42LDIuOS0wLjFjMC4zLTAuNSwwLTEuMi0wLjYtMS44bDIuNC00LjUKCWMxLjUsMC43LDMuMiwxLjIsNC45LDEuNGwtMC40LDQuOGMtMS4zLTAuMS0yLjQsMC41LTIuNCwxLjNjLTAuMSwwLjgsMSwxLjYsMi4zLDEuN2MxLjMsMC4xLDIuNS0wLjUsMi42LTEuMwoJYzAuMS0wLjYtMC41LTEuMS0xLjItMS41bDAuNC01YzAuMiwwLDAuNCwwLDAuNiwwYzEuNiwwLDMuMS0wLjIsNC42LTAuN2wxLDNjLTEuMiwwLjUtMiwxLjQtMS43LDIuMWMwLjMsMC44LDEuNSwxLDIuOCwwLjYKCWMxLjMtMC40LDIuMS0xLjQsMS44LTIuMmMtMC4yLTAuNS0wLjktMC44LTEuNy0wLjhsLTEuMS0zLjJjMS43LTAuNiwzLjItMS41LDQuNS0yLjdsNi4yLDYuOGMtMC45LDAuOS0xLjIsMi4yLTAuNSwyLjkKCWMwLjcsMC43LDIsMC42LDMtMC40YzEtMC45LDEuMy0yLjIsMC42LTNjLTAuNS0wLjUtMS4zLTAuNi0yLjEtMC4ybC02LjMtNi45YzEuNC0xLjQsMi42LTMuMSwzLjQtNC45bDIuMywxCgljLTAuNCwxLjItMC4yLDIuNSwwLjUsMi44YzAuOCwwLjMsMS44LTAuNSwyLjMtMS44YzAuNS0xLjMsMC4zLTIuNi0wLjUtMi45Yy0wLjUtMC4yLTEuMiwwLjEtMS43LDAuOGwtMi41LTFjMC42LTEuNywxLTMuNiwxLTUuNgoJYzAtMC4zLDAtMC42LDAtMC44bDMuOC0wLjRjMC4yLDEuMywwLjksMi4yLDEuNywyLjJDNDYuNywyNC40LDQ3LjMsMjMuMyw0Ny4xLDIxLjl6IE0zMi40LDE1YzAuNi0wLjYsMS41LTAuNywyLjEtMC4xCgljMC42LDAuNiwwLjYsMS41LDAuMSwyLjFjLTAuNiwwLjYtMS41LDAuNy0yLjEsMC4xQzMxLjgsMTYuNSwzMS44LDE1LjYsMzIuNCwxNXogTTI4LjQsMTIuMmMxLDAsMS45LDAuOSwxLjksMS45CgljMCwxLjEtMC44LDEuOS0xLjksMS45Yy0xLDAtMS45LTAuOS0xLjktMS45QzI2LjUsMTMsMjcuNCwxMi4yLDI4LjQsMTIuMnogTTE4LjIsMzQuNGMtMS4zLDAuNi0yLjksMC0zLjYtMS40CgljLTAuNy0xLjQtMC4zLTMuMSwxLTMuOGMxLjMtMC42LDIuOSwwLDMuNiwxLjRDMTkuOSwzMiwxOS41LDMzLjcsMTguMiwzNC40eiBNMTUuOSwyNS4xYzAtMC43LDAuNi0xLjMsMS4zLTEuMwoJYzAuNywwLDEuMywwLjYsMS4zLDEuM2MwLDAuNy0wLjYsMS4zLTEuMywxLjNDMTYuNSwyNi40LDE1LjksMjUuOCwxNS45LDI1LjF6IE0xNi4yLDE3LjdjLTAuNC0xLjgsMC45LTMuNSwyLjgtMy45CgljMS45LTAuNCwzLjgsMC43LDQuMiwyLjRzLTAuOSwzLjUtMi44LDMuOUMxOC41LDIwLjUsMTYuNiwxOS41LDE2LjIsMTcuN3ogTTI4LjEsMzVjLTMuOCwwLTYuOC0zLjItNi44LTcuMnMzLjEtNy4yLDYuOC03LjIKCXM2LjgsMy4yLDYuOCw3LjJTMzEuOSwzNSwyOC4xLDM1eiIvPgo8L3N2Zz4K');
-
             background-repeat: no-repeat;
-
-            background-position: 16px center;
-
-            background-size: 40px;
 
             display: block;
 
-            padding: 12px 12px 12px 64px;
+            padding: 12px 12px 12px 12px;
 
             font-weight: 600;
 
@@ -1073,7 +1067,7 @@ $('.inner-banner-video').html(bannerContent);
 
     <div id="clickToChat">
 
-        <a id="OpenChat" href="javascript:ToggleChat();" style="display: block;">COVID-19 <span>Assessment Tool</span></a>
+        <a id="OpenChat" href="javascript:ToggleChat();" style="display: block;">CHAT WITH US <span>Assessment Tool</span></a>
 
     </div>
 
